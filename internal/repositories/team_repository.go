@@ -11,6 +11,7 @@ type TeamRepository interface {
 	FindByID(id uint) (models.Team, error)
 	FindAll() ([]models.Team, error)
 	DeleteAll() error
+	ResetAutoIncrement() error
 }
 
 type GormTeamRepository struct {
@@ -39,4 +40,8 @@ func (r *GormTeamRepository) FindByID(id uint) (models.Team, error) {
 	var team models.Team
 	err := r.db.First(&team, id).Error
 	return team, err
+}
+
+func (r *GormTeamRepository) ResetAutoIncrement() error {
+	return r.db.Exec("DELETE FROM sqlite_sequence WHERE name='teams'").Error
 }

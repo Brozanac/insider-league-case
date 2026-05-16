@@ -13,6 +13,7 @@ type MatchRepository interface {
 	FindUnplayed() ([]models.Match, error)
 	Update(match *models.Match) error
 	DeleteAll() error
+	ResetAutoIncrement() error
 }
 
 type GormMatchRepository struct {
@@ -59,4 +60,8 @@ func (r *GormMatchRepository) Update(match *models.Match) error {
 
 func (r *GormMatchRepository) DeleteAll() error {
 	return r.db.Exec("DELETE FROM matches").Error
+}
+
+func (r *GormMatchRepository) ResetAutoIncrement() error {
+	return r.db.Exec("DELETE FROM sqlite_sequence WHERE name='matches'").Error
 }

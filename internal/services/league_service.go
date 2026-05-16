@@ -40,6 +40,8 @@ func NewLeagueService(
 func (s *DefaultLeagueService) InitializeLeague() error {
 	s.matchRepo.DeleteAll()
 	s.teamRepo.DeleteAll()
+	s.matchRepo.ResetAutoIncrement()
+	s.teamRepo.ResetAutoIncrement()
 
 	teams := []models.Team{
 		{Name: "Chelsea", Strength: 90},
