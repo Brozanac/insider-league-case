@@ -8,6 +8,9 @@ import (
 type LeagueService interface {
 	InitializeLeague() error
 	GetStandings() ([]models.Standing, error)
+	PlayWeek(week int) error
+	PlayAll() error
+	GetAllMatches() ([]models.Match, error)
 }
 
 type DefaultLeagueService struct {
@@ -15,6 +18,7 @@ type DefaultLeagueService struct {
 	matchRepo       repositories.MatchRepository
 	fixtureService  FixtureService
 	standingService StandingService
+	matchSimulator  MatchSimulator
 }
 
 func NewLeagueService(
@@ -22,12 +26,14 @@ func NewLeagueService(
 	matchRepo repositories.MatchRepository,
 	fixtureService FixtureService,
 	standingService StandingService,
+	matchSimulator MatchSimulator,
 ) LeagueService {
 	return &DefaultLeagueService{
 		teamRepo:        teamRepo,
 		matchRepo:       matchRepo,
 		fixtureService:  fixtureService,
 		standingService: standingService,
+		matchSimulator:  matchSimulator,
 	}
 }
 
@@ -76,4 +82,74 @@ func (s *DefaultLeagueService) GetStandings() ([]models.Standing, error) {
 	}
 
 	return s.standingService.CalculateStandings(teams, matches), nil
+}
+
+func (s *DefaultLeagueService) PlayWeek(week int) error {
+	matches, err := s.matchRepo.FindByWeek(week)
+	if err != nil {
+		return err
+	}
+
+	for i := range matches {
+		if matches[i].Played {
+			continue
+		}
+
+		homeTeam, err := s.teamRepo.FindByID(matches[i].HomeTeamID)
+		if err != nil {
+			return err
+		}
+
+		awayTeam, err := s.teamRepo.FindByID(matches[i].AwayTeamID)
+		if err != nil {
+			return err
+		}
+
+		simulatedMatch := s.matchSimulator.Simulate(
+			matches[i],
+			homeTeam,
+			awayTeam,
+		)
+
+		if err := s.matchRepo.Update(&simulatedMatch); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (s *DefaultLeagueService) PlayAll() error {
+	matches, err := s.matchRepo.FindUnplayed()
+	if err != nil {
+		return err
+	}
+
+	for i := range matches {
+		homeTeam, err := s.teamRepo.FindByID(matches[i].HomeTeamID)
+		if err != nil {
+			return err
+		}
+
+		awayTeam, err := s.teamRepo.FindByID(matches[i].AwayTeamID)
+		if err != nil {
+			return err
+		}
+
+		simulatedMatch := s.matchSimulator.Simulate(
+			matches[i],
+			homeTeam,
+			awayTeam,
+		)
+
+		if err := s.matchRepo.Update(&simulatedMatch); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (s *DefaultLeagueService) GetAllMatches() ([]models.Match, error) {
+	return s.matchRepo.FindAll()
 }

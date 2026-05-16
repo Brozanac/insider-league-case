@@ -8,6 +8,7 @@ import (
 
 type TeamRepository interface {
 	Create(team *models.Team) error
+	FindByID(id uint) (models.Team, error)
 	FindAll() ([]models.Team, error)
 	DeleteAll() error
 }
@@ -32,4 +33,10 @@ func (r *GormTeamRepository) FindAll() ([]models.Team, error) {
 
 func (r *GormTeamRepository) DeleteAll() error {
 	return r.db.Exec("DELETE FROM teams").Error
+}
+
+func (r *GormTeamRepository) FindByID(id uint) (models.Team, error) {
+	var team models.Team
+	err := r.db.First(&team, id).Error
+	return team, err
 }

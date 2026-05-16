@@ -9,6 +9,9 @@ import (
 type MatchRepository interface {
 	Create(match *models.Match) error
 	FindAll() ([]models.Match, error)
+	FindByWeek(week int) ([]models.Match, error)
+	FindUnplayed() ([]models.Match, error)
+	Update(match *models.Match) error
 	DeleteAll() error
 }
 
@@ -26,8 +29,32 @@ func (r *GormMatchRepository) Create(match *models.Match) error {
 
 func (r *GormMatchRepository) FindAll() ([]models.Match, error) {
 	var matches []models.Match
-	err := r.db.Find(&matches).Error
+	err := r.db.Order("week ASC").Find(&matches).Error
 	return matches, err
+}
+
+func (r *GormMatchRepository) FindByWeek(week int) ([]models.Match, error) {
+	var matches []models.Match
+	err := r.db.
+		Where("week = ?", week).
+		Order("id ASC").
+		Find(&matches).Error
+
+	return matches, err
+}
+
+func (r *GormMatchRepository) FindUnplayed() ([]models.Match, error) {
+	var matches []models.Match
+	err := r.db.
+		Where("played = ?", false).
+		Order("week ASC").
+		Find(&matches).Error
+
+	return matches, err
+}
+
+func (r *GormMatchRepository) Update(match *models.Match) error {
+	return r.db.Save(match).Error
 }
 
 func (r *GormMatchRepository) DeleteAll() error {

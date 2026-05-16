@@ -3,6 +3,7 @@ package handlers
 import (
 	"insider-league-case/internal/services"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -36,4 +37,53 @@ func (h *LeagueHandler) GetStandings(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, standings)
+}
+
+func (h *LeagueHandler) PlayWeek(c *gin.Context) {
+	weekParam := c.Param("week")
+
+	week, err := strconv.Atoi(weekParam)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid week parameter",
+		})
+		return
+	}
+
+	if err := h.leagueService.PlayWeek(week); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Week played successfully",
+		"week":    week,
+	})
+}
+
+func (h *LeagueHandler) PlayAll(c *gin.Context) {
+	if err := h.leagueService.PlayAll(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "All remaining matches played successfully",
+	})
+}
+
+func (h *LeagueHandler) GetAllMatches(c *gin.Context) {
+	matches, err := h.leagueService.GetAllMatches()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, matches)
 }
