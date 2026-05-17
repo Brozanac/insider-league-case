@@ -11,14 +11,16 @@ type LeagueService interface {
 	PlayWeek(week int) error
 	PlayAll() error
 	GetAllMatches() ([]models.Match, error)
+	GetPredictions() ([]models.Prediction, error)
 }
 
 type DefaultLeagueService struct {
-	teamRepo        repositories.TeamRepository
-	matchRepo       repositories.MatchRepository
-	fixtureService  FixtureService
-	standingService StandingService
-	matchSimulator  MatchSimulator
+	teamRepo          repositories.TeamRepository
+	matchRepo         repositories.MatchRepository
+	fixtureService    FixtureService
+	standingService   StandingService
+	matchSimulator    MatchSimulator
+	predictionService PredictionService
 }
 
 func NewLeagueService(
@@ -27,13 +29,15 @@ func NewLeagueService(
 	fixtureService FixtureService,
 	standingService StandingService,
 	matchSimulator MatchSimulator,
+	predictionService PredictionService,
 ) LeagueService {
 	return &DefaultLeagueService{
-		teamRepo:        teamRepo,
-		matchRepo:       matchRepo,
-		fixtureService:  fixtureService,
-		standingService: standingService,
-		matchSimulator:  matchSimulator,
+		teamRepo:          teamRepo,
+		matchRepo:         matchRepo,
+		fixtureService:    fixtureService,
+		standingService:   standingService,
+		matchSimulator:    matchSimulator,
+		predictionService: predictionService,
 	}
 }
 
@@ -170,4 +174,21 @@ func (s *DefaultLeagueService) PlayAll() error {
 
 func (s *DefaultLeagueService) GetAllMatches() ([]models.Match, error) {
 	return s.matchRepo.FindAll()
+}
+
+func (s *DefaultLeagueService) GetPredictions() ([]models.Prediction, error) {
+	teams, err := s.teamRepo.FindAll()
+	if err != nil {
+		return nil, err
+	}
+
+	matches, err := s.matchRepo.FindAll()
+	if err != nil {
+		return nil, err
+	}
+
+	return s.predictionService.CalculatePredictions(
+		teams,
+		matches,
+	), nil
 }

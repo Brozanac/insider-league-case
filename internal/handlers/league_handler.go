@@ -87,3 +87,15 @@ func (h *LeagueHandler) GetAllMatches(c *gin.Context) {
 
 	c.JSON(http.StatusOK, matches)
 }
+
+func (h *LeagueHandler) GetPredictions(c *gin.Context) {
+	predictions, err := h.leagueService.GetPredictions()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, predictions)
+}

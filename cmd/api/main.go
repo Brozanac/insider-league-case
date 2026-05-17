@@ -21,6 +21,10 @@ func main() {
 	fixtureService := services.NewFixtureService()
 	standingService := services.NewStandingService()
 	matchSimulator := services.NewMatchSimulator()
+	predictionService := services.NewPredictionService(
+		matchSimulator,
+		standingService,
+	)
 
 	leagueService := services.NewLeagueService(
 		teamRepo,
@@ -28,6 +32,7 @@ func main() {
 		fixtureService,
 		standingService,
 		matchSimulator,
+		predictionService,
 	)
 
 	leagueHandler := handlers.NewLeagueHandler(leagueService)
@@ -43,6 +48,8 @@ func main() {
 	router.POST("/league/play/all", leagueHandler.PlayAll)
 
 	router.GET("/matches", leagueHandler.GetAllMatches)
+
+	router.GET("/league/predictions", leagueHandler.GetPredictions)
 
 	router.Run(":8080")
 }
