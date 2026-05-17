@@ -30,7 +30,11 @@ func (r *GormMatchRepository) Create(match *models.Match) error {
 
 func (r *GormMatchRepository) FindAll() ([]models.Match, error) {
 	var matches []models.Match
-	err := r.db.Order("week ASC").Find(&matches).Error
+	err := r.db.
+		Order("week ASC").
+		Order("id ASC").
+		Find(&matches).Error
+
 	return matches, err
 }
 
@@ -49,6 +53,7 @@ func (r *GormMatchRepository) FindUnplayed() ([]models.Match, error) {
 	err := r.db.
 		Where("played = ?", false).
 		Order("week ASC").
+		Order("id ASC").
 		Find(&matches).Error
 
 	return matches, err

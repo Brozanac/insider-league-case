@@ -44,10 +44,26 @@ func (s *DefaultLeagueService) InitializeLeague() error {
 	s.teamRepo.ResetAutoIncrement()
 
 	teams := []models.Team{
-		{Name: "Chelsea", Strength: 90},
-		{Name: "Arsenal", Strength: 85},
-		{Name: "Manchester City", Strength: 95},
-		{Name: "Liverpool", Strength: 88},
+		{Name: "Arsenal", Strength: 90},
+		{Name: "Aston Villa", Strength: 82},
+		{Name: "Bournemouth", Strength: 74},
+		{Name: "Brentford", Strength: 73},
+		{Name: "Brighton & Hove Albion", Strength: 78},
+		{Name: "Burnley", Strength: 65},
+		{Name: "Chelsea", Strength: 86},
+		{Name: "Crystal Palace", Strength: 76},
+		{Name: "Everton", Strength: 72},
+		{Name: "Fulham", Strength: 74},
+		{Name: "Leeds United", Strength: 68},
+		{Name: "Liverpool", Strength: 91},
+		{Name: "Manchester City", Strength: 94},
+		{Name: "Manchester United", Strength: 84},
+		{Name: "Newcastle United", Strength: 83},
+		{Name: "Nottingham Forest", Strength: 75},
+		{Name: "Sunderland", Strength: 66},
+		{Name: "Tottenham Hotspur", Strength: 81},
+		{Name: "West Ham United", Strength: 77},
+		{Name: "Wolverhampton Wanderers", Strength: 70},
 	}
 
 	for i := range teams {
