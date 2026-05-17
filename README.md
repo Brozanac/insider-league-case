@@ -66,4 +66,17 @@ type TeamRepository interface {
 } ```go
 
 
+## Prediction System
 
+The project includes a Monte Carlo-based championship prediction system.
+
+The prediction engine works by cloning the current league state and simulating
+the remaining unplayed matches multiple times. After each simulation, the final
+league table is calculated and the champion is recorded.
+
+The final probability is calculated as:
+
+winner_count / total_simulations * 100
+
+This allows the API to estimate each team's chance of finishing first based on
+the current table and remaining fixtures.
