@@ -69,7 +69,6 @@ func (h *LeagueHandler) PlayWeek(c *gin.Context) {
 		"week":    week,
 	})
 }
-}
 
 func (h *LeagueHandler) PlayAll(c *gin.Context) {
 	if err := h.leagueService.PlayAll(); err != nil {
