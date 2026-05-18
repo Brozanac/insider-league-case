@@ -80,3 +80,19 @@ winner_count / total_simulations * 100
 
 This allows the API to estimate each team's chance of finishing first based on
 the current table and remaining fixtures.
+
+
+## Run with Docker
+
+Build and start the application:
+
+```bash
+docker compose up --build
+
+The league contains:
+
+- 4 teams
+- 6 weeks
+- 2 matches per week
+- 12 total matches
+- Premier League-style points and standings rules
