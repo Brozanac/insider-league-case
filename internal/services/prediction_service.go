@@ -31,7 +31,7 @@ func (s *MonteCarloPredictionService) CalculatePredictions(
 	teams []models.Team,
 	matches []models.Match,
 ) []models.Prediction {
-	totalSimulations := 500
+	totalSimulations := 1000
 
 	winCounts := make(map[uint]int)
 
