@@ -9,6 +9,7 @@ import (
 type MatchRepository interface {
 	Create(match *models.Match) error
 	FindAll() ([]models.Match, error)
+	FindByID(id uint) (models.Match, error)
 	FindByWeek(week int) ([]models.Match, error)
 	FindUnplayed() ([]models.Match, error)
 	Update(match *models.Match) error
@@ -69,4 +70,10 @@ func (r *GormMatchRepository) DeleteAll() error {
 
 func (r *GormMatchRepository) ResetAutoIncrement() error {
 	return r.db.Exec("DELETE FROM sqlite_sequence WHERE name='matches'").Error
+}
+
+func (r *GormMatchRepository) FindByID(id uint) (models.Match, error) {
+	var match models.Match
+	err := r.db.First(&match, id).Error
+	return match, err
 }

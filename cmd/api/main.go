@@ -40,16 +40,14 @@ func main() {
 	router := gin.Default()
 
 	router.POST("/league/init", leagueHandler.InitializeLeague)
-
 	router.GET("/league/table", leagueHandler.GetStandings)
 
 	router.POST("/league/play/week/:week", leagueHandler.PlayWeek)
-
 	router.POST("/league/play/all", leagueHandler.PlayAll)
 
 	router.GET("/matches", leagueHandler.GetAllMatches)
+	router.PUT("/matches/:id", leagueHandler.UpdateMatchResult)
 
 	router.GET("/league/predictions", leagueHandler.GetPredictions)
-
 	router.Run(":8080")
 }

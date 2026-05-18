@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"insider-league-case/internal/models"
 	"insider-league-case/internal/services"
 	"net/http"
 	"strconv"
@@ -46,13 +47,6 @@ func (h *LeagueHandler) PlayWeek(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": "Invalid week parameter",
-		})
-		return
-	}
-
-	if week < 1 || week > 6 {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Week must be between 1 and 6",
 		})
 		return
 	}
@@ -105,4 +99,47 @@ func (h *LeagueHandler) GetPredictions(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, predictions)
+}
+
+func (h *LeagueHandler) UpdateMatchResult(c *gin.Context) {
+	matchIDParam := c.Param("id")
+
+	matchID, err := strconv.Atoi(matchIDParam)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid match id",
+		})
+		return
+	}
+
+	var request models.UpdateMatchRequest
+
+	if err := c.ShouldBindJSON(&request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid request body",
+		})
+		return
+	}
+
+	if request.HomeGoals < 0 || request.AwayGoals < 0 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Goals cannot be negative",
+		})
+		return
+	}
+
+	if err := h.leagueService.UpdateMatchResult(
+		uint(matchID),
+		request.HomeGoals,
+		request.AwayGoals,
+	); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Match result updated successfully",
+	})
 }

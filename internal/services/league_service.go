@@ -12,6 +12,7 @@ type LeagueService interface {
 	PlayAll() error
 	GetAllMatches() ([]models.Match, error)
 	GetPredictions() ([]models.Prediction, error)
+	UpdateMatchResult(matchID uint, homeGoals int, awayGoals int) error
 }
 
 type DefaultLeagueService struct {
@@ -175,4 +176,21 @@ func (s *DefaultLeagueService) GetPredictions() ([]models.Prediction, error) {
 		teams,
 		matches,
 	), nil
+}
+
+func (s *DefaultLeagueService) UpdateMatchResult(
+	matchID uint,
+	homeGoals int,
+	awayGoals int,
+) error {
+	match, err := s.matchRepo.FindByID(matchID)
+	if err != nil {
+		return err
+	}
+
+	match.HomeGoals = homeGoals
+	match.AwayGoals = awayGoals
+	match.Played = true
+
+	return s.matchRepo.Update(&match)
 }
