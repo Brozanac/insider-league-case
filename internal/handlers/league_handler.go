@@ -50,6 +50,13 @@ func (h *LeagueHandler) PlayWeek(c *gin.Context) {
 		return
 	}
 
+	if week < 1 || week > 6 {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Week must be between 1 and 6",
+		})
+		return
+	}
+
 	if err := h.leagueService.PlayWeek(week); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
@@ -61,6 +68,7 @@ func (h *LeagueHandler) PlayWeek(c *gin.Context) {
 		"message": "Week played successfully",
 		"week":    week,
 	})
+}
 }
 
 func (h *LeagueHandler) PlayAll(c *gin.Context) {

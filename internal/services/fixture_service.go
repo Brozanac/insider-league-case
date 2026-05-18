@@ -13,63 +13,89 @@ func NewFixtureService() FixtureService {
 }
 
 func (s *RoundRobinFixtureService) GenerateFixtures(teams []models.Team) []models.Match {
-	if len(teams)%2 != 0 {
+	if len(teams) != 4 {
 		return []models.Match{}
 	}
 
-	var matches []models.Match
-
-	n := len(teams)
-	rounds := n - 1
-	matchesPerRound := n / 2
-
-	// Work on a copy so we do not mutate the original teams slice.
-	rotatingTeams := make([]models.Team, n)
-	copy(rotatingTeams, teams)
-
-	// First half of the season.
-	for round := 0; round < rounds; round++ {
-		week := round + 1
-
-		for i := 0; i < matchesPerRound; i++ {
-			home := rotatingTeams[i]
-			away := rotatingTeams[n-1-i]
-
-			// Alternate home/away a little so the first team does not always stay home.
-			if round%2 == 0 {
-				matches = append(matches, models.Match{
-					Week:       week,
-					HomeTeamID: home.ID,
-					AwayTeamID: away.ID,
-					Played:     false,
-				})
-			} else {
-				matches = append(matches, models.Match{
-					Week:       week,
-					HomeTeamID: away.ID,
-					AwayTeamID: home.ID,
-					Played:     false,
-				})
-			}
-		}
-
-		// Rotate all teams except the first one.
-		last := rotatingTeams[n-1]
-		copy(rotatingTeams[2:], rotatingTeams[1:n-1])
-		rotatingTeams[1] = last
-	}
-
-	// Second half of the season: reverse home/away.
-	firstHalfCount := len(matches)
-
-	for i := 0; i < firstHalfCount; i++ {
-		matches = append(matches, models.Match{
-			Week:       matches[i].Week + rounds,
-			HomeTeamID: matches[i].AwayTeamID,
-			AwayTeamID: matches[i].HomeTeamID,
+	return []models.Match{
+		// First half
+		{
+			Week:       1,
+			HomeTeamID: teams[0].ID,
+			AwayTeamID: teams[1].ID,
 			Played:     false,
-		})
-	}
+		},
+		{
+			Week:       1,
+			HomeTeamID: teams[2].ID,
+			AwayTeamID: teams[3].ID,
+			Played:     false,
+		},
 
-	return matches
+		{
+			Week:       2,
+			HomeTeamID: teams[0].ID,
+			AwayTeamID: teams[2].ID,
+			Played:     false,
+		},
+		{
+			Week:       2,
+			HomeTeamID: teams[1].ID,
+			AwayTeamID: teams[3].ID,
+			Played:     false,
+		},
+
+		{
+			Week:       3,
+			HomeTeamID: teams[0].ID,
+			AwayTeamID: teams[3].ID,
+			Played:     false,
+		},
+		{
+			Week:       3,
+			HomeTeamID: teams[1].ID,
+			AwayTeamID: teams[2].ID,
+			Played:     false,
+		},
+
+		// Second half — reverse home/away
+		{
+			Week:       4,
+			HomeTeamID: teams[1].ID,
+			AwayTeamID: teams[0].ID,
+			Played:     false,
+		},
+		{
+			Week:       4,
+			HomeTeamID: teams[3].ID,
+			AwayTeamID: teams[2].ID,
+			Played:     false,
+		},
+
+		{
+			Week:       5,
+			HomeTeamID: teams[2].ID,
+			AwayTeamID: teams[0].ID,
+			Played:     false,
+		},
+		{
+			Week:       5,
+			HomeTeamID: teams[3].ID,
+			AwayTeamID: teams[1].ID,
+			Played:     false,
+		},
+
+		{
+			Week:       6,
+			HomeTeamID: teams[3].ID,
+			AwayTeamID: teams[0].ID,
+			Played:     false,
+		},
+		{
+			Week:       6,
+			HomeTeamID: teams[2].ID,
+			AwayTeamID: teams[1].ID,
+			Played:     false,
+		},
+	}
 }
