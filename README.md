@@ -96,3 +96,11 @@ The league contains:
 - 2 matches per week
 - 12 total matches
 - Premier League-style points and standings rules
+
+## SQL Schema and Queries
+
+The project includes SQL files under the `docs/` directory.
+
+```txt
+docs/schema.sql
+docs/example_queries.sql
