@@ -1,0 +1,157 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  color: #1f2937;
+}
+
+.app {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.header {
+  background: #111827;
+  color: white;
+  padding: 28px;
+  border-radius: 16px;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  margin: 0;
+}
+
+.header p {
+  margin-bottom: 0;
+  color: #d1d5db;
+}
+
+.message {
+  background: #e0f2fe;
+  border: 1px solid #7dd3fc;
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+button,
+select,
+input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+}
+
+button {
+  background: #111827;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #374151;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1.2fr;
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.card h2 {
+  margin-top: 0;
+}
+
+.table-card {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 10px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+th {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.matches {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.match {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+}
+
+.match p {
+  margin: 4px 0;
+}
+
+.score-editor {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.score-editor input {
+  width: 64px;
+}
+
+.predictions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.prediction {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  background: #f9fafb;
+  border-radius: 10px;
+}
+
+@media (max-width: 1000px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .match {
+    flex-direction: column;
+  }
+}
