@@ -18,6 +18,7 @@ function App() {
   const [selectedWeek, setSelectedWeek] = useState(1);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showAllMatches, setShowAllMatches] = useState(false);
 
   const refreshData = async () => {
     try {
@@ -87,9 +88,9 @@ function App() {
     return acc;
   }, {});
 
-  const filteredMatches = matches.filter(
-    (match) => match.week === Number(selectedWeek)
-  );
+  const displayedMatches = showAllMatches
+  ? matches
+  : matches.filter((match) => match.week === Number(selectedWeek));
 
   return (
     <div className="app">
@@ -102,7 +103,9 @@ function App() {
       {loading && <div className="message">Loading...</div>}
 
       <section className="controls">
-        <button onClick={handleInit}>Initialize League</button>
+        <button onClick={handleInit} disabled={loading}>
+          Initialize League
+        </button>
 
         <select
           value={selectedWeek}
@@ -115,8 +118,21 @@ function App() {
           ))}
         </select>
 
-        <button onClick={handlePlayWeek}>Play Selected Week</button>
-        <button onClick={handlePlayAll}>Play All League</button>
+    <label className="checkbox-control">
+      <input
+        type="checkbox"
+        checked={showAllMatches}
+        onChange={(event) => setShowAllMatches(event.target.checked)}
+      />
+      Show all matches
+    </label>
+
+        <button onClick={handlePlayWeek} disabled={loading}>
+          Play Selected Week
+        </button>
+        <button onClick={handlePlayAll} disabled={loading}>
+          Play All League
+        </button>
       </section>
 
       <main className="grid">
@@ -126,11 +142,12 @@ function App() {
         </section>
 
         <section className="card">
-          <h2>Week {selectedWeek} Matches</h2>
+          <h2>{showAllMatches ? "All Matches" : `Week ${selectedWeek} Matches`}</h2>
           <MatchList
-            matches={filteredMatches}
+            matches={displayedMatches}
             teamNameById={teamNameById}
             onUpdateMatch={handleUpdateMatch}
+            loading={loading}
           />
         </section>
 
@@ -185,7 +202,7 @@ function LeagueTable({ table }) {
   );
 }
 
-function MatchList({ matches, teamNameById, onUpdateMatch }) {
+function MatchList({ matches, teamNameById, onUpdateMatch, loading }) {
   const [scores, setScores] = useState({});
 
   const handleChange = (matchId, field, value) => {
@@ -211,18 +228,30 @@ function MatchList({ matches, teamNameById, onUpdateMatch }) {
         const awayGoals =
           scores[match.id]?.away_goals ?? match.away_goals ?? 0;
 
+        const homeTeam =
+          teamNameById[match.home_team_id] || `Team ${match.home_team_id}`;
+
+        const awayTeam =
+          teamNameById[match.away_team_id] || `Team ${match.away_team_id}`;
+
         return (
           <div className="match" key={match.id}>
-            <div>
-              <strong>Match #{match.id}</strong>
-              <p>
-                {teamNameById[match.home_team_id] ||
-                  `Team ${match.home_team_id}`}{" "}
-                vs{" "}
-                {teamNameById[match.away_team_id] ||
-                  `Team ${match.away_team_id}`}
+            <div className="match-info">
+              <div className="match-topline">
+                <strong>Week {match.week}</strong>
+
+                <span className={match.played ? "badge played" : "badge pending"}>
+                  {match.played ? "Played" : "Pending"}
+                </span>
+              </div>
+
+              <p className="match-teams">
+                {homeTeam} vs {awayTeam}
               </p>
-              <p>Status: {match.played ? "Played" : "Not Played"}</p>
+
+              <p className="match-score">
+                Current score: {match.home_goals} - {match.away_goals}
+              </p>
             </div>
 
             <div className="score-editor">
@@ -247,10 +276,11 @@ function MatchList({ matches, teamNameById, onUpdateMatch }) {
               />
 
               <button
+                disabled={loading}
                 onClick={() => onUpdateMatch(match.id, homeGoals, awayGoals)}
               >
-                Update
-              </button>
+                  Update
+                </button>
             </div>
           </div>
         );
@@ -268,8 +298,17 @@ function PredictionList({ predictions }) {
     <div className="predictions">
       {predictions.map((prediction) => (
         <div className="prediction" key={prediction.team_id}>
-          <span>{prediction.team_name}</span>
-          <strong>{prediction.probability.toFixed(1)}%</strong>
+          <div className="prediction-row">
+            <span>{prediction.team_name}</span>
+            <strong>{prediction.probability.toFixed(1)}%</strong>
+          </div>
+
+          <div className="prediction-bar">
+            <div
+              className="prediction-fill"
+              style={{ width: `${prediction.probability}%` }}
+            />
+          </div>
         </div>
       ))}
     </div>

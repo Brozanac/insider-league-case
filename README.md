@@ -77,3 +77,26 @@ Services
 Repositories
 ↓
 Database
+
+
+## Frontend Dashboard
+
+A simple React frontend is included under the `frontend/` directory for demonstrating the API visually.
+
+The frontend supports:
+
+- Initializing the league
+- Viewing the league table
+- Viewing weekly fixtures
+- Viewing all matches
+- Playing a selected week
+- Playing all remaining matches
+- Editing match results
+- Viewing championship predictions
+
+### Run Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev

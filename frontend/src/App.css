@@ -138,14 +138,6 @@ th {
   gap: 12px;
 }
 
-.prediction {
-  display: flex;
-  justify-content: space-between;
-  padding: 12px;
-  background: #f9fafb;
-  border-radius: 10px;
-}
-
 @media (max-width: 1000px) {
   .grid {
     grid-template-columns: 1fr;
@@ -154,4 +146,93 @@ th {
   .match {
     flex-direction: column;
   }
+}
+
+.checkbox-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+}
+
+.checkbox-control input {
+  width: auto;
+}
+
+tbody tr:first-child {
+  background: #fefce8;
+}
+
+tbody tr:first-child td:first-child::before {
+  content: "🏆 ";
+}
+
+.match-info {
+  flex: 1;
+}
+
+.match-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.match-teams {
+  font-weight: 600;
+}
+
+.match-score {
+  color: #6b7280;
+}
+
+.badge {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+}
+
+.badge.played {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.badge.pending {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.prediction {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: #f9fafb;
+  border-radius: 10px;
+}
+
+.prediction-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.prediction-bar {
+  width: 100%;
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.prediction-fill {
+  height: 100%;
+  background: #111827;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
