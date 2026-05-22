@@ -134,6 +134,50 @@ React frontend dashboard
 Docker support for both backend and frontend
 SQL schema and example queries
 
+## Architecture
+
+The backend uses a layered architecture:
+```
+HTTP Handlers
+↓
+Services
+↓
+Repositories
+↓
+Database
+```
+
+The project follows:
+
+Interface-based design
+Repository pattern
+Service layer pattern
+Struct composition
+Interface-Based Design
+
+Interfaces are used to decouple business logic from concrete implementations.
+
+For example, services depend on repository interfaces instead of directly depending on GORM or SQLite. This makes the project easier to test, maintain, and extend.
+
+### Repository Pattern
+
+Repositories handle database operations such as creating, fetching, updating, and deleting records.
+
+This keeps persistence logic separate from business logic.
+
+### Service Layer
+
+Services contain the main business rules, including:
+
+league initialization
+fixture generation
+match simulation
+standings calculation
+championship prediction
+editable match results
+
+Handlers stay lightweight and only handle request parsing, validation, service calls, and JSON responses.
+
 ## API Endpoints
 
 Base URL:
