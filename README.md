@@ -180,12 +180,12 @@ Handlers stay lightweight and only handle request parsing, validation, service c
 
 ## API Endpoints
 
-Base URL:
+### Base URL:
 ```
 http://localhost:8080
 ```
 
-Initialize League:
+### Initialize League:
 
 ```
 POST /league/init
