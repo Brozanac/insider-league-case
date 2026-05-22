@@ -21,17 +21,20 @@ function App() {
   const [showAllMatches, setShowAllMatches] = useState(false);
 
   const refreshData = async () => {
+  const tableRes = await getLeagueTable();
+  const matchesRes = await getMatches();
+  const predictionRes = await getPredictions();
+
+  setTable(Array.isArray(tableRes.data) ? tableRes.data : []);
+  setMatches(Array.isArray(matchesRes.data) ? matchesRes.data : []);
+  setPredictions(Array.isArray(predictionRes.data) ? predictionRes.data : []);
+};
+
+  useEffect(() => {
+  const loadInitialData = async () => {
     try {
       setLoading(true);
-
-      const tableRes = await getLeagueTable();
-      const matchesRes = await getMatches();
-      const predictionRes = await getPredictions();
-
-      setTable(Array.isArray(tableRes.data) ? tableRes.data : []);
-      setMatches(Array.isArray(matchesRes.data) ? matchesRes.data : []);
-      setPredictions(Array.isArray(predictionRes.data) ? predictionRes.data : []);
-    
+      await refreshData();
     } catch (error) {
       console.error(error);
       setMessage("Could not fetch data. Make sure backend is running.");
@@ -40,49 +43,68 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    refreshData();
-  }, []);
+  loadInitialData();
+}, []);
 
   const handleInit = async () => {
-    try {
-      await initializeLeague();
-      setMessage("League initialized successfully.");
-      await refreshData();
-    } catch (error) {
-      setMessage(error.response?.data?.error || "Could not initialize league.");
-    }
-  };
+  try {
+    setLoading(true);
+
+    await initializeLeague();
+    setMessage("League initialized successfully.");
+
+    await refreshData();
+  } catch (error) {
+    setMessage(error.response?.data?.error || "Could not initialize league.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handlePlayWeek = async () => {
-    try {
-      await playWeek(selectedWeek);
-      setMessage(`Week ${selectedWeek} played successfully.`);
-      await refreshData();
-    } catch (error) {
-      setMessage(error.response?.data?.error || "Could not play selected week.");
-    }
-  };
+  try {
+    setLoading(true);
+
+    await playWeek(selectedWeek);
+    setMessage(`Week ${selectedWeek} played successfully.`);
+
+    await refreshData();
+  } catch (error) {
+    setMessage(error.response?.data?.error || "Could not play selected week.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handlePlayAll = async () => {
-    try {
-      await playAll();
-      setMessage("All remaining matches played successfully.");
-      await refreshData();
-    } catch (error) {
-      setMessage(error.response?.data?.error || "Could not play all matches.");
-    }
-  };
+  try {
+    setLoading(true);
+
+    await playAll();
+    setMessage("All remaining matches played successfully.");
+
+    await refreshData();
+  } catch (error) {
+    setMessage(error.response?.data?.error || "Could not play all matches.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleUpdateMatch = async (matchId, homeGoals, awayGoals) => {
-    try {
-      await updateMatchResult(matchId, homeGoals, awayGoals);
-      setMessage("Match result updated successfully.");
-      await refreshData();
-    } catch (error) {
-      setMessage(error.response?.data?.error || "Could not update match.");
-    }
-  };
+  try {
+    setLoading(true);
+
+    await updateMatchResult(matchId, homeGoals, awayGoals);
+    setMessage("Match result updated successfully.");
+
+    await refreshData();
+  } catch (error) {
+    setMessage(error.response?.data?.error || "Could not update match.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const teamNameById = table.reduce((acc, team) => {
     acc[team.team_id] = team.team_name;
