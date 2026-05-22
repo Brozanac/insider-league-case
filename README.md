@@ -87,7 +87,7 @@ insider-league-case/
 ├── README.md
 ├── .gitignore
 └── LICENSE
-
+```
 
 ##League Format
 
@@ -154,4 +154,4 @@ Example response:
 {
   "message": "League initialized successfully"
 }
-```
+``` 
