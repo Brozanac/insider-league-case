@@ -28,9 +28,10 @@ function App() {
       const matchesRes = await getMatches();
       const predictionRes = await getPredictions();
 
-      setTable(tableRes.data);
-      setMatches(matchesRes.data);
-      setPredictions(predictionRes.data);
+      setTable(Array.isArray(tableRes.data) ? tableRes.data : []);
+      setMatches(Array.isArray(matchesRes.data) ? matchesRes.data : []);
+      setPredictions(Array.isArray(predictionRes.data) ? predictionRes.data : []);
+    
     } catch (error) {
       console.error(error);
       setMessage("Could not fetch data. Make sure backend is running.");
@@ -161,7 +162,7 @@ function App() {
 }
 
 function LeagueTable({ table }) {
-  if (table.length === 0) {
+  if (!Array.isArray(table) || table.length === 0) {
     return <p>No table data yet. Click Initialize League.</p>;
   }
 
@@ -202,7 +203,8 @@ function LeagueTable({ table }) {
   );
 }
 
-function MatchList({ matches, teamNameById, onUpdateMatch, loading }) {
+function MatchList({ matches, teamNameById, onUpdateMatch }) {
+  matches = Array.isArray(matches) ? matches : [];
   const [scores, setScores] = useState({});
 
   const handleChange = (matchId, field, value) => {
@@ -290,27 +292,31 @@ function MatchList({ matches, teamNameById, onUpdateMatch, loading }) {
 }
 
 function PredictionList({ predictions }) {
-  if (predictions.length === 0) {
+  if (!Array.isArray(predictions) || predictions.length === 0) {
     return <p>No predictions yet.</p>;
   }
 
   return (
     <div className="predictions">
-      {predictions.map((prediction) => (
-        <div className="prediction" key={prediction.team_id}>
-          <div className="prediction-row">
-            <span>{prediction.team_name}</span>
-            <strong>{prediction.probability.toFixed(1)}%</strong>
-          </div>
+      {predictions.map((prediction, index) => {
+        const probability = Number(prediction.probability || 0);
 
-          <div className="prediction-bar">
-            <div
-              className="prediction-fill"
-              style={{ width: `${prediction.probability}%` }}
-            />
+        return (
+          <div className="prediction" key={prediction.team_id || index}>
+            <div className="prediction-row">
+              <span>{prediction.team_name || "Unknown Team"}</span>
+              <strong>{probability.toFixed(1)}%</strong>
+            </div>
+
+            <div className="prediction-bar">
+              <div
+                className="prediction-fill"
+                style={{ width: `${Math.min(probability, 100)}%` }}
+              />
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }
