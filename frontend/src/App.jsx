@@ -149,7 +149,7 @@ function App() {
             teamNameById={teamNameById}
             onUpdateMatch={handleUpdateMatch}
             loading={loading}
-          />
+/>
         </section>
 
         <section className="card">
@@ -203,7 +203,7 @@ function LeagueTable({ table }) {
   );
 }
 
-function MatchList({ matches, teamNameById, onUpdateMatch }) {
+function MatchList({ matches, teamNameById, onUpdateMatch, loading }) {
   matches = Array.isArray(matches) ? matches : [];
   const [scores, setScores] = useState({});
 
