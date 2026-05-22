@@ -89,7 +89,8 @@ insider-league-case/
 └── LICENSE
 ```
 
-##League Format
+
+## League Format
 
 The system follows the original case requirement with a 4-team Premier League-style simulation.
 
@@ -108,7 +109,7 @@ Points
 Goal difference
 Goals scored
 
-##Features
+## Features
 Initialize league teams and fixtures
 Generate double round-robin fixtures
 Simulate a selected week
@@ -121,7 +122,7 @@ Recalculate standings after edited results
 Reset league data during initialization
 Run backend and frontend with Docker Compose
 
-##Extra Features
+## Extra Features
 
 In addition to the core requirements, this project includes:
 
@@ -133,14 +134,14 @@ React frontend dashboard
 Docker support for both backend and frontend
 SQL schema and example queries
 
-##API Endpoints
+## API Endpoints
 
 Base URL:
 ```
 http://localhost:8080
 ```
 
-Initialize League
+Initialize League:
 
 ```
 POST /league/init
@@ -154,4 +155,4 @@ Example response:
 {
   "message": "League initialized successfully"
 }
-``` 
+```
