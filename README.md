@@ -1,102 +1,67 @@
 # Insider League Simulation Case
 
-Backend simulation of a football league system developed with Go for the Insider Development Intern Hiring Day case.
+A full-stack football league simulation project developed for the Insider Development Intern Hiring Day case.
 
-The application simulates a 4-team Premier League-style league, generates fixtures, plays matches, calculates standings, estimates championship probabilities, and allows match result editing through REST API endpoints.
+The project simulates a 4-team Premier League-style league, generates fixtures, plays matches, calculates standings, estimates championship probabilities, allows editable match results, and provides a React dashboard for visual interaction.
+
+The original case requires a Go backend, interface-based design, struct composition, API-accessible endpoints, SQL schema/queries, and optionally deployment/setup documentation. This project includes those requirements plus a frontend dashboard and Docker support. :contentReference[oaicite:0]{index=0}
 
 ---
 
 ## Tech Stack
+
+### Backend
 
 - Go
 - Gin
 - GORM
 - SQLite
 - Docker
-- REST API
+
+### Frontend
+
+- React
+- Vite
+- Axios
+- CSS
 
 ---
 
-## League Format
-
-The system follows the original case requirement with a 4-team Premier League-style simulation.
-
-The league contains:
-
-- 4 teams
-- 6 weeks
-- 2 matches per week
-- 12 total matches
-- Each team plays 6 matches
-- Premier League-style points and standings rules
-
-Standings are calculated based on:
-
-1. Points
-2. Goal difference
-3. Goals scored
-
----
-
-## Features
-
-- Initialize league teams and fixtures
-- Generate double round-robin fixtures
-- Simulate selected weeks
-- Simulate all remaining league matches
-- Calculate league standings dynamically
-- List all matches and results
-- Estimate championship probabilities
-- Edit match results manually
-- Reset league data during initialization
-
----
-
-## Extra Features
-
-In addition to the core requirements, this project includes:
-
-- Automatic league play until the end of the season
-- Editable match results
-- Dynamic standings recalculation
-- Monte Carlo championship prediction system
-- Docker support
-- SQL schema and example queries
-
----
-
-## Architecture
-
-This project uses a layered backend architecture:
+## Project Structure
 
 ```txt
-HTTP Handlers
-↓
-Services
-↓
-Repositories
-↓
-Database
-
-
-## Frontend Dashboard
-
-A simple React frontend is included under the `frontend/` directory for demonstrating the API visually.
-
-The frontend supports:
-
-- Initializing the league
-- Viewing the league table
-- Viewing weekly fixtures
-- Viewing all matches
-- Playing a selected week
-- Playing all remaining matches
-- Editing match results
-- Viewing championship predictions
-
-### Run Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
+insider-league-case/
+├── backend/
+│   ├── cmd/
+│   │   └── api/
+│   │       └── main.go
+│   ├── internal/
+│   │   ├── database/
+│   │   ├── handlers/
+│   │   ├── models/
+│   │   ├── repositories/
+│   │   └── services/
+│   ├── docs/
+│   │   ├── schema.sql
+│   │   └── example_queries.sql
+│   ├── Dockerfile
+│   ├── go.mod
+│   └── go.sum
+│
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   │   ├── api/
+│   │   │   └── leagueApi.js
+│   │   ├── App.jsx
+│   │   ├── App.css
+│   │   └── main.jsx
+│   ├── Dockerfile
+│   ├── package.json
+│   ├── package-lock.json
+│   └── vite.config.js
+│
+├── docker-compose.yml
+├── README.md
+├── .gitignore
+└── LICENSE

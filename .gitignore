@@ -1,28 +1,32 @@
-# Binaries
+# Go binaries
 *.exe
 *.exe~
 *.dll
 *.so
 *.dylib
+*.test
+*.out
 
-# Database
+# SQLite / local database
 *.db
 *.sqlite
+backend/data/
+backend/league.db
 
 # Environment
 .env
-
-# IDE
-.vscode/
+backend/.env
+frontend/.env
 
 # Logs
 *.log
 
-# OS
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# IDE / OS
+.vscode/
+.idea/
 .DS_Store
 Thumbs.db
-
-#Data
-data/
-*.db
-*.sqlite
