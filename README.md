@@ -95,6 +95,12 @@ The league contains:
 * Each team plays 6 matches
 * Premier League-style points and standings rules
 
+Scoring follows Premier League-style rules:
+
+* win: 3 points
+* draw: 1 point
+* loss: 0 points
+
 Standings are sorted by:
 
 1. Points
