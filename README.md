@@ -97,9 +97,9 @@ The league contains:
 
 Scoring follows Premier League-style rules:
 
-* win: 3 points
-* draw: 1 point
-* loss: 0 points
+* Win: 3 points
+* Draw: 1 point
+* Loss: 0 points
 
 Standings are sorted by:
 
