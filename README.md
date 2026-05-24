@@ -129,7 +129,6 @@ In addition to the core requirements, this project includes:
 * Dynamic standings recalculation
 * Monte Carlo championship prediction system
 * React frontend dashboard
-* Docker support for both backend and frontend
 * SQL schema and example queries
 
 ## Architecture
