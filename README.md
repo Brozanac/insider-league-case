@@ -1,14 +1,29 @@
-# Insider League Simulation Case
+# Insider League Case
 
-A full-stack football league simulation project developed for the Insider Development Intern Hiring Day case.
+This is my solution for the Insider Development Intern Hiring Day case.
 
-The project simulates a 4-team Premier League-style league, generates fixtures, plays matches, calculates standings, estimates championship probabilities, allows manual match result editing, and provides a React dashboard for visual interaction.
+The project simulates a small football league with 4 teams. It generates fixtures, plays matches week by week, calculates the league table, estimates championship probabilities, and allows match results to be edited manually.
 
-The original case requires a Go backend, interface-based design, struct composition, API-accessible endpoints, SQL schema/queries, and setup/deployment documentation. This project also includes bonus features such as a React frontend, editable match results, Monte Carlo predictions, and Docker support.
+I built the backend with Go and added a small React dashboard to make the API easier to test and present.
 
 ---
 
-## Tech Stack
+## What the project does
+
+- Creates a 4-team league
+- Generates a double round-robin fixture list
+- Simulates a selected week
+- Simulates all remaining matches
+- Calculates the league table dynamically
+- Estimates championship probabilities with Monte Carlo simulation
+- Allows match results to be edited
+- Updates standings and predictions after edited results
+- Provides a simple React dashboard
+- Can be run locally or with Docker
+
+---
+
+## Tech stack
 
 ### Backend
 
@@ -16,18 +31,21 @@ The original case requires a Go backend, interface-based design, struct composit
 - Gin
 - GORM
 - SQLite
-- Docker
 
 ### Frontend
 
 - React
 - Vite
 - Axios
-- CSS
+
+### Other
+
+- Docker
+- Docker Compose
 
 ---
 
-## Project Structure
+## Project structure
 
 ```txt
 insider-league-case/
@@ -35,59 +53,32 @@ insider-league-case/
 │   ├── cmd/
 │   │   └── api/
 │   │       └── main.go
-│   │
 │   ├── internal/
 │   │   ├── database/
-│   │   │   └── database.go
-│   │   │
 │   │   ├── handlers/
-│   │   │   └── league_handler.go
-│   │   │
 │   │   ├── models/
-│   │   │   ├── match.go
-│   │   │   ├── prediction.go
-│   │   │   ├── standing.go
-│   │   │   ├── team.go
-│   │   │   └── update_match_request.go
-│   │   │
 │   │   ├── repositories/
-│   │   │   ├── match_repository.go
-│   │   │   └── team_repository.go
-│   │   │
 │   │   └── services/
-│   │       ├── fixture_service.go
-│   │       ├── league_service.go
-│   │       ├── match_simulator.go
-│   │       ├── prediction_service.go
-│   │       └── standing_service.go
-│   │
 │   ├── docs/
 │   │   ├── schema.sql
 │   │   └── example_queries.sql
-│   │
 │   ├── Dockerfile
 │   ├── go.mod
 │   └── go.sum
 │
 ├── frontend/
-│   ├── public/
 │   ├── src/
 │   │   ├── api/
-│   │   │   └── leagueApi.js
 │   │   ├── App.jsx
 │   │   ├── App.css
 │   │   └── main.jsx
-│   │
 │   ├── Dockerfile
 │   ├── package.json
-│   ├── package-lock.json
 │   └── vite.config.js
 │
 ├── docker-compose.yml
 ├── README.md
-├── .gitignore
-└── LICENSE
-```
+└── .gitignore
 
 
 ## League Format
@@ -353,9 +344,9 @@ The prediction engine works by cloning the current league state and simulating t
 
 After each simulation:
 
-Remaining matches are simulated.
-The final league table is calculated.
-The champion is recorded.
+* Remaining matches are simulated.
+* The final league table is calculated.
+*The champion is recorded.
 
 The final probability is calculated as:
 
