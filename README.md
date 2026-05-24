@@ -4,7 +4,7 @@ This is my solution for the Insider Development Intern Hiring Day case.
 
 The project simulates a small football league with 4 teams. It generates fixtures, plays matches week by week, calculates the league table, estimates championship probabilities, and allows match results to be edited manually.
 
-I built the backend with Go and added a small React dashboard to make the API easier to test and present.
+I have built the backend with Go and added a React dashboard to make the API easier to test and present, as the frontend.
 
 ---
 
@@ -79,6 +79,7 @@ insider-league-case/
 ├── docker-compose.yml
 ├── README.md
 └── .gitignore
+```
 
 
 ## League Format
